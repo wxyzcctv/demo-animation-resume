@@ -1,0 +1,26 @@
+*{margin:0;padding:0;}
+*{box-sizing: border-box;}
+.token.comment{
+    color:black;
+}
+.token.selector{
+    color: black;
+}
+.token.punctuation{
+    color: black;
+}
+.token.property{
+    color: black;
+}
+.token.function{
+    color: black;
+}
+#code{
+    height: 100vh;
+    overflow: hidden;
+}
+#content{
+
+    padding-left: 16px;
+    overflow: hidden;
+}
