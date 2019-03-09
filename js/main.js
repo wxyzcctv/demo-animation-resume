@@ -7,9 +7,11 @@ function writeCode(prefix,code,fn){
         domCode.innerHTML = Prism.highlight(prefix + code.substring(0,n), Prism.languages.css)
         //     这句话就实现了的是将添加的代码中的HTML标签替换了，这样就能实现代码的高亮
         styleTag.innerHTML = prefix + code.substring(0,n)
+        //这里加入的是将将写入的代码加入到css中去
         domCode.scrollTop = domCode.scrollHeight
-        // 加上这一句就能实现当整个页面显示不全所有的代码的时候就将整个页面向下拉10000像素，
-        // 向下拉10000像素的方法比较傻
+        // 加上这一句就能实现当整个页面就能实现窗口根据代码的长度进行移动
+        // scrollHeight 的值等于该元素在不使用滚动条的情况下为了适应视口中所用内容所需的最小高度
+        // scrollTop 值是这个元素的顶部到视口可见内容（的顶部）的距离的度量。
         // scrollHeight就是将页面向下拉到不能再向下为止，这两者实现的效果是一样的
         if(n>=code.length){
             window.clearInterval(id)
@@ -134,15 +136,6 @@ var md = `
 `
 // 实现代码的高亮主要是通过引入了一个prism的css库和js库，然后将该库所设置的默认代码颜色全部变为黑色，
 // 在需要将代码执行到某处的时候进行高亮，就将所有的之前标注的颜色在变回来
-
-writeCode('',result,()=>{
-    createPaper(()=>{
-        writeCode(result,result2,()=>{
-            writeMarkdown(md)
-        })
-    })
-})
-
 function createPaper(fn){
     let paper = document.createElement('div')
     paper.id = 'paper'
@@ -152,3 +145,15 @@ function createPaper(fn){
     paper.appendChild(content)
     fn.call()
 }
+
+writeCode('',result,()=>{
+    createPaper(()=>{
+        writeCode(result,result2,()=>{
+            writeMarkdown(md)
+        })
+    })
+})
+//这个writeCode是一个异步执行的函数，异步的意思就是不等结果就会执行后面的代码，因为里面包含了一个setInterval函数
+//所以希望在执行完成之后再执行后面的代码的话就需要使用回调，而回调的方法就是call一下，
+//而createPaper函数是一个同步函数，这个同步函数就是等到函数执行完成之后在执行后面的代码，
+//这里的同步函数也使用了回调，同步函数也是可以使用回调的。
